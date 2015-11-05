@@ -144,3 +144,19 @@ function
 2
 
 1
+
+
+###example04
+
+```javaScript
+	function outPut(s){ 
+		document.writeln(s) 
+	} 
+	
+	var a_array = [1,2,3]; 
+	var b_array = a_array; 
+	outPut(b_array); //1,2,3 
+	a_array[3] = 4; 
+	outPut(b_array);//1,2,3,4 
+
+```
