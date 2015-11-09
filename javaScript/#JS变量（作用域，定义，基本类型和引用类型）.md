@@ -146,7 +146,7 @@ function
 1
 
 
-###example04
+###example05
 
 ```javaScript
 	function outPut(s){ 
@@ -159,4 +159,30 @@ function
 	a_array[3] = 4; 
 	outPut(b_array);//1,2,3,4 
 
+```
+###example06
+```javaScript
+	s = 'hello';
+	s.toUpperCase();
+	console.log(s);	//HELLO
+```
+其实，本以为字符串是字符的数组，可以使用引用模式，但是其实在`s.toUpperCase()`这句中，实际是返回了一个新的值
+
+###example06（引用类型的比较）
+	当且仅当他们引用同一个基对象时，它们才相等。
+
+```javaScript
+	var o = {x:1},p = {x:1};	//具有相同属性的两个对象
+	0 === p;	//=> false: 两个单独的对象永不相等
+	var a = [],b = [];	//两个单独的空数组
+	a === b;	//=> false: 两个单独的数组永不相等
+```
+
+
+```javaScript
+```
+
+
+
+```javaScript
 ```
