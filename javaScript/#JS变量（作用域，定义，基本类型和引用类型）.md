@@ -178,11 +178,28 @@ function
 	a === b;	//=> false: 两个单独的数组永不相等
 ```
 
+###声明提前
+###example07
 
 ```javaScript
+	var scope = "global";
+	function f(){
+		console.log(scope);		//=>local
+		var scope = "local";	
+		console.log(scope);		//=>local
+	}
+
 ```
 
 
-
 ```javaScript
+	var scope = "global";
+	function f(){
+		console.log(scope);		//=>global
+		scope = 'local';
+		console.log(scope);		//=>local
+	}
+
 ```
+
+前面讲解过，这里只是加了例子
