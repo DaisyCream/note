@@ -38,7 +38,7 @@ name1=value&name2=value2
 - POST请求对数据长度没有要求
 
 
-<tbody><tr>
+<table><tr>
 <th style="width:20%;">&nbsp;</th>
 <th>GET</th>
 <th>POST</th>
@@ -98,4 +98,4 @@ name1=value&name2=value2
 <td>数据在 URL 中对所有人都是可见的。</td>
 <td>数据不会显示在 URL 中。</td>
 </tr>
-</tbody>
+</table>
