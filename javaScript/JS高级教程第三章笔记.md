@@ -76,7 +76,48 @@
 	s3 = +s3;//NaN
 ```
 
+```javascript
+	var num = -18
+	console.log(num.toString(2))//-10010
+```
 
+- 按位非(NOT)：用波浪线表示（~）
+
+```javascript
+	var num1 = 25;   //0011001
+	var num2 = ~num1;//1100110这里不用加一，直接反
+	console.log(num2);//-26
+```
+
+- 按位与(AND)：任何一位为0都为0
+
+```javascript
+	var result = 25 & 3;
+	console.log(result); //1
+	//11001
+	//00011
+
+```
+
+- 按位或(OR)：除了00，其余都为1
+
+```javasccript
+	var result = 25 | 3;
+	console.log(result); //27
+	//11001
+	//00011
+
+```
+
+- 按位异或(xor)：相同的为0
+
+```javascript
+	var result = 25 ^ 3;
+	console.log(result); //26
+	//11001
+	//00011
+
+```
 
 
 
