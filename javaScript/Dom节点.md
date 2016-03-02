@@ -1,6 +1,6 @@
 ##DOM节点的补充
 
-###将string(里面是一些html的语句) =》转化成html
+###将string(里面是一些html的语句) =>转化成html
 ###example
 `txt文件中存在这个数据(/node.js(Study)/JQueryAjax/jsonTxt01.txt)`
 
