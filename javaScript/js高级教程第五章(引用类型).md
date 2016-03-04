@@ -85,13 +85,145 @@
 		}
 	
 	}
+	
+	
+	var person = [person1, person2]
+	console.log(person);//Niko,Gri
+	console.log(person.toString());/Niko,Gri
+	console.log(person.toLocalString())//nick,gg
+```
+
+###join
+
+- 若不传入任何值，则用逗号分隔
+
+```javascript
+	var colors = ["red", "blue", "green"];
+	console.log(colors.join(#));//red#blue#green
+```
+
+
+###栈方法(pop())
+
+```javascript
+	
+	var colors = new Array();
+	var count = colors.push("red","green");
+	console.log(count);//2
+	
+	count = colors.push("black");
+	console.log(count);//3
+	
+	var item = colors.pop();
+	console.log(item);"black"
+	console.log(colors.length);//2
 
 ```
 
-var person = [person1, person2]
-console.log(person);//Niko,Gri
-console.log(person.toString());/Niko,Gri
-console.log(person.toLocalString())//nick,gg
+
+###队列方法(shift() & unshift())
+
+```javascript 
+	var colors = new Array();
+	var count = colors.push("red", "green");
+	console.log(count);//2
+	
+	count = colors.push("black");
+	console.log(count);//3
+	
+	var item = colors.shift();
+	console.log(item);//"red"
+	console.log(colors.length);//2
+
+```
+
+```javascript
+	var colors = new Array();
+	var count = colors.unshift("red", "green");
+	console.log(count);//2
+	console.log(colors);//[ 'red', 'green' ]
+	
+	count = colors.unshift("black");
+	console.log(count);//3
+	
+	var item = colors.pop();
+	console.log(item);//"red"
+	console.log(colors.length);//2
+
+```
+
+###重排序
+
+reverse:会对反转数据项的顺序
+
+```javascript
+
+	var values = [1,2,3,4,5];
+	values.reverse();
+	console.log(values);
+
+```
+
+sort:按升序排列数组项，会调用array的toString方法，然后比较得到的`字符串`，即使数组中的每一项都是数值，sort()方法比较的也是字符串
+
+```javascript
+
+	var values = [0,1,5,10,15];
+	values.sort();
+	console.log(values);//[ 0, 1, 10, 15, 5 ]
+
+```
+
+
+sort()方法可以被传递一个函数，函数中有两个参数，就是相互比较的两个值
+
+```javascript
+	
+	function compare(value1, value2){
+	    if(value1 < value2){
+	        return -1;
+	    }else if(value1 > value2){
+	        return 1;
+	    }else{
+	        return 0;
+	    }
+	}
+	
+	var values = [0,1,5,10,15];
+	values.sort(compare);
+	console.log(values);//[ 0, 1, 5, 10, 15 ]
+
+```
+
+
+若想倒叙，则将方法的赋值改变，若想快，则用reverse();
+
+
+```javascript
+	function compare(value1, value2){
+		    if(value1 < value2){
+		        return -1;
+		    }else if(value1 > value2){
+		        return 1;
+		    }else{
+		        return 0;
+		    }
+		}
+		
+		var values = [0,1,5,10,15];
+		values.sort(compare);
+		console.log(values);//[ 15, 10, 5, 1, 0 ]
+
+```
+
+
+
+```javascript
+
+```
+
+
+
 
 
 
