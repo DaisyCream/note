@@ -216,12 +216,58 @@ sort()方法可以被传递一个函数，函数中有两个参数，就是相�
 
 ```
 
+还有更简单的compare
+
+```javascript
+	function compare(value1, value2){
+		return value1 - value2
+	}
+
+```
+
+###操作方法
+
+concat():基于当前数组中的所有项创建一个新的数组
+
+```javascript
+	var colors1 = ["red", "green", "blue"];
+	var colors2 = colors1.concat("yellow", ["black", "brown"]);
+	console.log(colors1);//[ 'red', 'green', 'blue' ]
+	console.log(colors2);//[ 'red', 'green', 'blue', 'yellow', 'black', 'brown' ]
+```
+
+slice()：接受1-2个参数，返回起始和结束位置之间的项，但不包括结束位置的项
+
+
+```javascript
+		
+	var colors = ["red","green","blue","yellow","purple"];
+	var colors1 = colors.slice(1);
+	var colors2 = colors.slice(1,4);
+	
+	console.log(colors1);//[ 'green', 'blue', 'yellow', 'purple' ]
+	
+	console.log(colors2);//[ 'green', 'blue', 'yellow' ]
+
+```
+
+splice()
+
+- 删除，只需指定2个参数，要删除的项数，例如splice(0,2)
+
+- 插入：其实位置，插入项
+
+```javascript
+	
+
+```
+
+
 
 
 ```javascript
 
 ```
-
 
 
 
