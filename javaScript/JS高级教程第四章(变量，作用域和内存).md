@@ -47,6 +47,40 @@
 console.log(person instanceof Object);//true
 console.log(person instanceof Array);
 
+###执行环境
+
+- 每个函数都有自己的执行环境，当执行流进入一个函数时，执行的环境就会被推入一个环境栈中，在执行结束后，栈将其环境弹出，把控制权返回给之前的执行环境。
+
+- 当代吗在一个环境中执行时，会创建变量对象的一个作用域链(scope chain)
+
+
+### javascript没有块级作用域
+
+###清除
+
+- 标记清除：当变量进入环境的时候，会自动标记为“进入环境”，永远不能释放进入环境的变量所占用的内存，当变量离开环境是，则将其标记为“离开环境”。
+
+- 引用计数：被引用加1，被丢弃减1
+
+###垃圾回收
+
+- 在IE中，调用`window.CollectGarbage()`方法会立即执行垃圾收集，Opera7中调用`window.opera.collect()`.
+
+###管理内存
+
+- 一旦数据不在有用，最好通过将其设置为null来释放其引用，适用于全局变量和全局对象属性。
+
+```javascript
+	function createPerson(name){
+		var localPerson = new Object();
+		localPerson.name = name;
+		return localPerson;
+	}
+	
+	var globalPerson = createPerson("Nicholas");
+	
+	globalPerson = null;
+```
 
 
 
