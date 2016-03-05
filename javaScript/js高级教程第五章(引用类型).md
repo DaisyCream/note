@@ -37,7 +37,7 @@
 
 ####监测数组:
 
-- instanceof的问题，它嘉定单一的全局执行环境，如果网页中包含多个框架，那实际上就存在两个以上不同的全局执行环境，从而存在两个以上不同版本的Array构造函数，如果你从一个框架向另一个框架传入一个数组，那么传入的数组在第二个框架中原生创建的数组分别具有各自不同的构造函数。为此ES新增了Array.isArray()方法
+- instanceof的问题，它单一的全局执行环境，如果网页中包含多个框架，那实际上就存在两个以上不同的全局执行环境，从而存在两个以上不同版本的Array构造函数，如果你从一个框架向另一个框架传入一个数组，那么传入的数组在第二个框架中原生创建的数组分别具有各自不同的构造函数。为此ES新增了Array.isArray()方法
 
 ```javascript
 	if(value instanceof Array){
@@ -659,18 +659,48 @@ console.log(result1);//"hello1
 	console.log(stringValue.localeCompare("yellow"));//0
 	console.log(stringValue.localeCompare("zoo"));//-1
 
-
-
 ```
+###单体内置对象
+
+- encodeURI：对应的是decodeURI，decodeURI输出的结果，只能对encodeURI替换的字符进行解码。
+
+- encodeURI只能对使用encodeURI替换的字符进行解码，而encodeURIComponent能够解码使用encodeURIComponent编码的所有字符
+
 ```javascript
 
-```
-```javascript
+	var uri = "http%3A%2Fwww.wrox.com%2Fillegal%20value.htm%23start";
+
+	console.log(decodeURI(uri));//http%3A%2Fwww.wrox.com%2Fillegal value.htm%23start
+	console.log(decodeURIComponent(uri));//http:/www.wrox.com/illegal value.htm#start
 
 ```
+###eval
+
+- 将字符串转化为实际代码
+
+
+```javascript
+	eval("function sayHi(){alert("hi");}");
+	sayHi();//"hi"
+```
+
+###舍入方法
+
+- Math.ceil：向上舍入
+
+- Math.floor：向下舍入
+
+- Math.round：四舍五入
+
+
 ```javascript
 
+	console.log(Math.ceil(25.1));//26
+	console.log(Math.floor(25.9));//25;
+
 ```
+- Math.floor(Math.random()*9+2);//返回2-10的整数
+
 ```javascript
 
 ```
