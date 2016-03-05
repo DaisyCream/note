@@ -521,20 +521,180 @@ console.log(sayName1.length));//2
 	console.log(typeof str);//string
 
 ```
+###boolean
+
+- boolean类型是与布尔值对应的引用类型
+
+- Boolean重写了valueOf方法，返回的只是true和false
+
+```javascript
+	var booleanObject = new Boolean(true);
+	
+	var falseObject = new Boolean(true);
+	console.log(typeof falseObject);//object
+	console.log(falseObject instanceof Boolean);//true
+	console.log(falseObject.valueOf());//true
+
+```
+###Number
+
+- 和Boolean一样，都修改了valueOf方法，返回基本类型值，其他方法都返回字符串
+
+```javascript
+
+	var numberObject = new Number(20);
+
+	var num = 10;
+	console.log(num.toString(2));//1010
+
+
+```
+
+
+- toFixed()：按照指定的小数返回数值的字符串表示，如果指出的位比原有的小，则就会舍入;
+
+```javascript
+
+	var num = 10;
+	console.log(num.toFixed(2));//"10.00"
+	
+	var num1 = 10.005;
+	console.log(num1.toFixed(2));//"10.01"
+
+```
+###String
+
+- string类型是字符串的对象包装类型，可以用new来构造函数
+
+```javascript
+	var stringValue = "hello world";
+
+
+//返回字符
+console.log(stringValue.charAt(1));//"e"
+
+
+//返回字符编码ASCLL码值
+console.log(stringValue.charCodeAt(1));//"101"
+
+
+//方括号索引来访问字符
+console.log(stringValue[1]); //"e"
+
+//
+var str = "hello";
+var result = str.concat("world");
+console.log(result);//"hello world"
+console.log(str);//"hello"
+
+var result1 = str.concat("1","!");
+console.log(result1);//"hello1
+	
+```
+- slice：第一个参数是起始位置，第二个参数是结束位置。如果是负值，则与字符串的长度相加
+
+- substr：第一个参数是起始位置，第二个参数是参数个数，如果是负值，第一个参数，则与字符串的长度相加则将负的第二个参数转换为0
+
+- substring：第一个参数是起始位置，第二个参数是结束位置，如果是负值，会把所有参数转换为0
+
+- IE8对于substr传入负值有问题，会返回原字符串
+
+```javascript
+
+	var stringValue = "hello world";
+
+	console.log(stringValue.slice(3));//"lo world"
+	console.log(stringValue.substring(3));//"lo world"
+	console.log(stringValue.substr(3));//"lo world"
+	console.log(stringValue.slice(3,7));//"lo w"
+	console.log(stringValue.substring(3,7));//"lo w"
+	console.log(stringValue.substr(3,7));//"lo worl"
+
+
+```
+
+```javascript
+
+	console.log(stringValue.slice(-3));//"rld"
+	console.log(stringValue.substr(-3));//"rld"
+	console.log(stringValue.substring(-3));//"hello world"
+	console.log(stringValue.slice(3, -4));//"lo w"
+	console.log(stringValue.substring(3, -4));//"hel"会从小的开始，大	的结束，所以应该是(subString(0,3))
+	console.log(stringValue.substr(3,-4));//""
+
+
+```
+
+- trim方法：会创建一个字符串的副本，删除`前置`及`后缀`所有的空格，然后返回结果
+
+```javascript
+
+	var stringValue = "     hello world      "
+	var trimStringValue = stringValue.trim();
+	console.log(trimStringValue);
+	console.log(stringValue);
+
+```
+
+- toLowerCase() & toUpperCase()
+
+```javascript
+
+	var stringValue = "hello world";
+	console.log(stringValue.toLowerCase());//"HELLO WORLD"
+	console.log(stringValue.toUpperCase());//"hello world"
+
+```
+
+###字符串的模式匹配方法
+
+- match：接受一个参数，是正则表达式
+
+- localeCompare()方法
+
+```javascript
+
+	var stringValue = "yellow";
+	console.log(stringValue.localeCompare("brick"));//1
+	console.log(stringValue.localeCompare("yellow"));//0
+	console.log(stringValue.localeCompare("zoo"));//-1
 
 
 
+```
+```javascript
+
+```
+```javascript
+
+```
+```javascript
+
+```
+```javascript
+
+```
+```javascript
+
+```
+```javascript
+
+```
+```javascript
+
+```
+```javascript
+
+```
+```javascript
+
+```
 ```javascript
 
 ```
 
 
 
-
-
-```javascript
-
-```
 
 
 
