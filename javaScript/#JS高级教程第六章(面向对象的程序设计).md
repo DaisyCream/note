@@ -237,9 +237,11 @@
 	console.log(person1.sayName === person2.sayName);//true
 
 ```
-###原型模式
+###原型模式(prototype)
 
-- 如果每次都把共用函数放在global作用域里，那让全局作用域很凌乱，所以，每个函数都有一个prototype属性，这个属性是一个指针，指向一个对象，而这个对象的用途是包含可以由特定类型的所有实例共享的属性和方法。最好的好处是可以让所有对象实例共享它所包含的属性和方法
+- 如果每次都把共用函数放在global作用域里，那让全局作用域很凌乱，所以，每个函数都有一个prototype属性，这个属性是一个指针，指向一个对象，而这个对象的用途是包含可以由特定类型的所有实例共享的属性和方法。
+
+- prototype就是通过调用构造函数的那个对象实例的原型对象，使用原型对象的好处是可以让所有对象实例共享它所包含的属性和方法
 
 ```javascript
 
@@ -262,11 +264,20 @@
 ```
 
 ```javascript
-
+	console.log(person1.constructor);
+	console.log(Person.prototype.constructor);//Person
 ```
 
+- 创造了构造函数以后，其原型对象默认只会取得constructor属性，至于其他方法，则都是从Object继承而来的
+
+![](/Users/DaisyCream/Desktop/Object.png)
+
+
+- 虽然现实中无法访问到[[prototype]],但可以通过isPrototypeOf()方法来确定是否存在这种关系
 
 ```javascript
+console.log(Person.prototype.isPrototypeOf(person1));
+
 
 ```
 ```javascript
