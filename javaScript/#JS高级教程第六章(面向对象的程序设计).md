@@ -268,7 +268,7 @@
 	console.log(Person.prototype.constructor);//Person
 ```
 
-- 创造了构造函数以后，其原型对象默认只会取得constructor属性，至于其他方法，则都是从Object继承而来的
+- 创造了构造函数以后，其原型对象默认只会取得constructor属性，而这个属性也是共享的，至于其他方法，则都是从Object继承而来的
 
 ![](/Users/DaisyCream/Desktop/Object.png)
 
@@ -276,17 +276,30 @@
 - 虽然现实中无法访问到[[prototype]],但可以通过isPrototypeOf()方法来确定是否存在这种关系
 
 ```javascript
-console.log(Person.prototype.isPrototypeOf(person1));
-
-
-```
-```javascript
+	console.log(Person.prototype.isPrototypeOf(person1));//true
 
 ```
-```javascript
 
+- getPrototypeOf可以知道实例对象的对象原型，Object.getPrototypeOf(obj)
+
+```javascript
+	console.log(Object.getPrototypeOf(person1));
+	//Person { name: 'Nick', age: 29, job: 'software', sayName: 	[Function] }
+```
+- 每当代码读取到某个对象属性的时候，都会执行一次搜索，目标是具有给定名字的属性，搜索首先从对象实例本身开始，如果在实例中找到了具有给定名字的属性，则返回该属性的值，如果没有找到，则继续搜索指针指向的原型对象，例如，在我们调用person1.sayName()时，会先后执行两次搜索，首先，解释器会问：“实例person1有sayName属性吗？”，答：“没有”。然后，它会继续搜索，再问：“person1的原型有sayName属性吗？”答：“有”。于是，它就会读取那个保存在原型对象中的函数。
+
+
+
+-在实例对象中，不能改变对象原型的prototype属性，如果改变，也只能改变自身的属性，会覆盖对象原型，但是不会改变。不过，使用delete操作符则可以完全删除实例属性，从而让我们能够重新访问原型中的属性
+
+```javascript
+	person1.name = "haha";
+	console.log(person1.name);//"haha"
+	console.log(person2.name);//"Nick"
 ```
 ```javascript
+	delete person1.name;
+	console.log(person1.name);//"Nick"
 
 ```
 ```javascript
