@@ -302,22 +302,93 @@
 	console.log(person1.name);//"Nick"
 
 ```
+- 使用hasOwnProperty可以检测一个属性是存在于实例中，还是存在于原型中。这个方法只在给定属性存在于对象实例中时，才会返回true
+
+```javascript
+	person1.name = "haha";
+	console.log(person1.hasOwnProperty("name"));//true
+	console.log(person2.hasOwnProperty("name"));//false
+```
+
+![](/users/DaisyCream/Desktop/hasOwnProperty.png)
+
+- in操作符：单独使用时，in操作符会在通过对象能够访问的属性时返回true，无论在该实例中还是原型对象中
+
+- 可以用in操作和hasOwnProperty来确定一个属性到底是属于实例的还是对象原型的
+
+- 所有开发人员定义的属性都是可以枚举的
+
+```javascript
+	var o = {
+	    toString : function(){
+	        return "my Object";
+	    }
+	};
+	
+	for (var prop in o){
+	    if(prop == "toString"){
+	        console.log("Found toString");
+	    }
+	}
+```
+
+- 要知道对象的所有可枚举的类型，用Object.keys(obj)，返回包含所有可枚举属性的字符串数组，只能是自己的属性才会显示；
+
+```javascript
+	var keys = Object.keys(Person.prototype);
+	console.log(keys);//[ 'name', 'age', 'job', 'sayName' ]
+	
+	var p1 = new Person();
+	p1.name = "sd";
+	p1.age = 20;
+	
+	var p1Keys = Object.keys(p1);
+	console.log(p1Keys);//[ 'name', 'age' ]
+```
+
+- 如果想要得到所有属性实例，无论是否可枚举，都可以使用Object.getOwnPropertyNames()方法
+
+```javascript
+	var keys1 = Object.getOwnPropertyNames(Person.prototype);
+	console.log(keys1);
+	//[ 'constructor', 'name', 'age', 'job', 'sayName' ]
+```
+
+###原型语法
+
+```javascript
+	function Person(){
+	
+	}
+	
+	Person.prototype = {
+	    constructor: Person,
+	    name : "wahaha",
+	    age : 29,
+	    job : "ss",
+	    sayName : function(){
+	        console.log(this.name);
+	    }
+	};
+	
+	
+	var p1 = new Person();
+	console.log(p1.constructor);//Person
+```
+
+###原型的动态性
+
+- 在原型中查找值的过程试一次搜索，因此我们对原型对象所做的任何修改都能够立即从实例上反映出来-即使是先创建了实例后修改原型也一样
+
 ```javascript
 
-```
-```javascript
-
-```
-```javascript
-
-```
-```javascript
-
-```
-```javascript
-
-```
-```javascript
+	var  friend = new Person();
+	
+	Person.prototype.sayHi = function(){
+	    console.log("Hi");
+	};
+	
+	friend.sayHi();//"Hi"
 
 ```
 ```javascript
