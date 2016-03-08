@@ -391,9 +391,449 @@
 	friend.sayHi();//"Hi"
 
 ```
+- 重写对象：切断了所有实例与对象原型的联系
+
+![](/users/DaisyCream/Desktop/newPrototype.png);
+
+###原型对象
+
+- 原型中很多东西是被共享的，对于函数来说非常合适，对于基本数据类型倒也还行，但是对于包含引用类型的属性来说，问题就比较突出了。
+
+```javascript
+Person.prototype = {
+    constructor: Person,
+    name : "wahaha",
+    age : 29,
+    job : "ss",
+    friends : ["Shelby", "Court"],
+    sayName : function(){
+        console.log(this.name);
+    }
+};
+
+
+var p1 = new Person();
+var p2 = new Person();
+
+//console.log(Object.getOwnPropertyNames(Person.prototype));
+
+
+p1.friends.push("ss");
+console.log(p2.friends);//[ 'Shelby', 'Court', 'ss' ]
+```
+###组合使用构造函数模式和原型模式
+
+- 构造函数用于定义实例属性，而原型模式用于定义方法和共享属性，每个实例都有自己的一份实例属性副本，但是又享受这对方法的引用，更节约了内存，这种模式还像构造函数传递参数
+
+```javascript
+	function Person(name, age, job){
+	    this.name = name;
+	    this.age = age;
+	    this.job = job;
+	    this.friends = ["Shelby"];
+	}
+	
+	Person.prototype = {
+	    constructor : Person,
+	    sayName : function(){
+	        console.log(this.name);
+	    }
+	};
+	
+	var person1 = new Person("Nick", 29, "hahah");
+	var person2 = new Person("greg", 27, "doc");
+	
+	person1.friends.push("Van");
+	console.log(person1.friends);//[ 'Shelby', 'Van' ]
+	console.log(person2.friends);//[ 'Shelby' ]
+	console.log(person1.friends === person2.friends);//false
+	console.log(person1.sayName === person2.sayName);//true
+```
+
+###继承
+
+1.原型链：一个原型是另一个类型的构造函数，原型函数中包含指向另一个原型函数的指针，以此类推，一层一层
+
+不是SubType的原型的constructor属性被重写了，而是SubType的原型指向了另一个对象，SuperType的原型，而这个原型的constructor指向的是SubType
+
+```javascript
+	function SuperType(){
+	    this.property = true;
+	}
+	
+	SuperType.prototype.getSuperValue = function(){
+	    return this.property;
+	};
+	
+	function SubType(){
+	    this.subproperty = false;
+	}
+	
+	SubType.prototype = new SuperType();
+	
+	SubType.prototype.getSubValue = function(){
+	    return this.subproperty;
+	};
+	
+	var instance = new SubType();
+	console.log(instance.getSuperValue());//true
+	
+	console.log(Object.getPrototypeOf(instance));//SuperType
+	
+	console.log(instance instanceof SubType);//true
+
+```
+
+![](/users/DaisyCream/DeskTop/prototype_chain.png)
+
+2.确定原型和实例的关系
+
+- 由于原型链的关系，我们可以说instance是Object，SuperType，SubType的任何一个类型的实例。
+- 第二种方法是使用isPrototypeOf(obj)，只要是原型链中出现过的原型，都可以说事该原型链所派生的实例的原型，因此，也会返回true。
+
+
+- 重写超类的方法，或者需要添加超类中不存在的某个方法，不管怎样，给原型添加方法的代码一定要放在替换原型的语句之后
+
+```javascript
+
+
+	function SuperType(){
+	    this.property = true;
+	}
+	
+	SuperType.prototype.getSuperValue = function(){
+	    return this.property;
+	};
+	
+	function SubType(){
+	    this.subproperty = false;
+	}
+	
+	SubType.prototype = new SuperType();//重写方法这句一定要在重写方法之前
+	
+	SubType.prototype.getSubValue = function(){
+	    return this.subproperty;
+	};
+	
+	SubType.prototype.getSuperValue = function(){
+	    return false;
+	};
+	
+	var instance = new SubType();
+	console.log(instance.getSuperValue());//true
+	
+	//console.log(Object.getPrototypeOf(instance));//SuperType
+	
+	console.log(instance instanceof SubType);//true
+
+	var s1 = new SuperType();
+	console.log(s1.getSuperValue());//true
+
+
+```
+
+- 不能用对象字面量来重写子类
+
+- 在创建子类型的时候，不能给父类型传递参数，如果父类型的构造函数中，包含了引用类型的值，则会在子类型的prototype中继承，那么就会引发共享，一个实例改变参数，则任何实例都改变了
+
+```javascript
+	function SuperType(){
+	    this.color = ["red","blue"];
+	}
+	
+	function SubType(){
+	
+	}
+	
+	SubType.prototype = new SuperType();
+	
+	var s1 = new SubType();
+	var s2 = new SubType();
+	
+	s1.color.push("haha");
+	
+	console.log(s1.color);//[ 'red', 'blue', 'haha' ]
+	console.log(s2.color);//[ 'red', 'blue', 'haha' ]
+```
+
+###借用构造函数
+
+- 在子类构造函数的内部使用超类构造函数，这样子类的实例对象就拥有了自己的属性，而不是共享的，它就会有自己的属性副本
+
+```javascript
+	
+	function SuperType(){
+	    this.color = ["red", "blue"];
+	}
+	
+	function SubType(){
+	    SuperType.call(this);
+	}
+	
+	var instance1 = new SubType();
+	instance1.color.push("black");
+	console.log(instance1.color);//[ 'red', 'blue', 'black' ]
+	
+	var instance2 = new SubType();
+	console.log(instance2.color);//[ 'red', 'blue' ]
+	
+	console.log(SubType instanceof SuperType);//false
+```
+
+1.传递函数：可以在子类构造函数中向超类构造函数创建参数，为了确保SuperType不会重写子类的属性，可以在使用超类构造函数后，在添加应该在子类中定义的属性，如果有重叠，这样就可以覆盖
+
+```javascript
+
+	function SuperType(name){
+	    this.name = name;
+	}
+	
+	function SubType(name){
+	    SuperType.call(this, name);
+	    this.age = 29;
+	}
+	
+	SuperType.prototype.sayName = function(){
+	    console.log(this.name);
+	};
+	
+	var s1 = new SubType("wahha");
+	console.log(s1.name);//wahha
+	console.log(s1.age);//29
+```
+###组合继承
+
+- 定义：是将原型链借用构造函数的技术组合到一起。使用原型链实现对原型属性和方法的继承，而通过借用构造函数来实现对实例属性的继承，这样，即通过在原型上定义方法实现了函数的复用，又能保证每个实例都有自己的属性
+
+- 构造函数中定义的属性和方法要比原型中定义的属性和方法的优先级高，如果定义了同名称的属性和方法，构造函数中的将会覆盖原型中的 
+
+
+```javascript
+	function SuperType(name){
+	    this.name = name;
+	    this.color = ["red"];
+	}
+	
+	SuperType.prototype.sayName = function(){
+	    console.log(this.name);
+	};
+	
+	function SubType(name, age){
+	    SuperType.call(this,name);
+	    this.age = age;
+	}
+	
+	SubType.prototype = new SuperType();
+	
+	SubType.prototype.sayAge = function(){
+	    console.log(this.age);
+	};
+	
+	var instance1 = new SubType("Nicholas", 29);
+	instance1.color.push("black");
+	console.log(instance1.color);
+	instance1.sayAge();
+	instance1.sayName();
+	
+	
+	var instance2 = new SubType("Greg", 27);
+	console.log(instance2.color);
+	instance2.sayAge();
+	instance2.sayName();
+	console.log(SubType.prototype);
+	
+	console.log(instance1);
+	
+	function s(){
+	    this.name = "s";
+	}
+	
+	s.prototype.name = "m";
+	
+	var o = new s();
+	console.log(s.name);//s
+
+```
+
+###原型式继承
+
+- 利用了object创建对象，并且把属性传进去，返回一个新的对象实例
+
+```javascript
+	function object(o){
+	    function F(){}
+	    F.prototype = o;
+	    return new F();
+	}
+
+```
+
+```javascript
+
+	var person = {
+	    name: "hahah"
+	};
+	
+	var anotherPerson = Object.create(person, {
+	    name: {
+	        value : "Greg"
+	    }
+	});
+	
+	console.log(anotherPerson.name);//Greg
+
+```
+###寄生式继承
+
+- 定义，用object方法，传入一个对象，这个对象作为新对象的属性，然后对这个新对象添加属性，传出新对象new出来的对象传出去，既可以继承，也可以自己添加
+
+```javascript
+//
+//s.prototype.name = "m";
+//
+//var o = new s();
+//console.log(s.name);//s
+
+
+function object(o){
+    function F(){}
+    F.prototype = o;
+    return new F();
+}
+
+function createAnother(original){
+    var clone = object(original);
+    clone.sayHi = function(){
+        console.log("Hi");
+    };
+    return clone;
+}
+
+
+var person = {
+    name : "haha"
+};
+
+var personA = createAnother();
+personA.sayHi();//Hi
+```
+
+###寄生组合继承
+
+
+
+```javascript
+	function object(o){
+	    function F(){}
+	    F.prototype = o;
+	    return new F();
+	}
+	
+	function inheritPrototype(subType, superType){
+	    var prototype = object(superType.prototype);
+	    prototype.constructor = subType;
+	    subType.prototype = prototype;//只传了属性进来
+	}
+	
+	
+	function SuperType(name){
+	    this.name = name;
+	    this.colors = ["red", "blue", "green"];
+	}
+	
+	var s = new SuperType("s");
+	
+	SuperType.prototype.sayName = function(){
+	    console.log(this.name);
+	};
+	
+	function SubType(name, age){
+	    SuperType.call(this,name);
+	    this.age = age;
+	}
+	
+	inheritPrototype(SubType, SuperType);
+	
+	SubType.prototype.sayAge = function(){
+	    console.log(this.age);
+	};
+	
+	var sub = new SubType("ss",23);
+	
+	console.log(sub instanceof SuperType);
+
+```
+
 ```javascript
 
 ```
+
 ```javascript
 
 ```
+
+```javascript
+
+```
+
+```javascript
+
+```
+
+```javascript
+
+```
+
+```javascript
+
+```
+
+```javascript
+
+```
+
+```javascript
+
+```
+
+```javascript
+
+```
+
+```javascript
+
+```
+
+```javascript
+
+```
+
+```javascript
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
