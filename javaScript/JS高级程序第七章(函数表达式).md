@@ -188,33 +188,137 @@ console.log(result[1]());
 ```
 由于函数参数是按照值传递的，所以就会将变量i的当前值赋值给参数num，而在这个时候，函数内部，又创建了并返回了一个访问num的闭包，这样一来，result数组中的每个函数都有自己num变量的一个副本。
 
-```javascript
+###this对象
 
+- this对象是在`运行`时基于函数的执行环境绑定的，在全局函数中，this等于window，当函数被对象调用时，this等于调用的那个对象。不过，匿名函数的执行环境具有全局性，因此this常常指向window。
+
+- 只有调用函数的时候，才会创建它的作用域链，它的活动对象会获得两个特殊变量：this和arguments
+
+```javascript
+var name = "The Window";
+
+var object = {
+    name : "My Object",
+
+    getNameFunc : function(){
+        return function(){
+            return this.name;
+        };
+    }
+};
+
+console.log(object.getNameFunc()());//The Window
+```
+
+
+```javascript
+var name = "The Window";
+
+var object = {
+    name : "My Object",
+
+    getNameFunc : function(){
+        var that = this;
+        return function(){
+            return that.name;
+        };
+    }
+};
+
+console.log(object.getNameFunc()());//My Window
 ```
 
 ```javascript
 
+var name = "The window";
+
+var object = {
+    name: "My object",
+
+    getName: function(){
+        return this.name
+    }
+};
+
+console.log(object.getName());//My object
+
 ```
+此时，getName函数的活动变量对象中this和arguments，this指的就是它所在环境，就是object
 
 ```javascript
+var name = "The window";
 
+var object = {
+    name: "My object",
+
+    getName: function(){
+        return this.name
+    }
+};
+
+var s = {
+    name :"lala"
+};
+
+console.log(object.getName());//My object
+console.log((object.getName)());//My object
+console.log((object.getName = object.getName)());//The Window
+console.log((s.getName = object.getName)());//The Window
+console.log(s.getName());//lala
 ```
+
+第二行代码在调用了这个方法前给它加上了括号。虽然加上括号，但是就好像只是在引用一个函数，但this得值得到了维护，因为object.getName和（object.getName）的定义是相同的。第三行代码先执行了一条赋值语句，然后调用复制后的结果，因为这个赋值表达式是函数本身，所以this得值不能得到维持,()只是得到值。
+
+###内存泄漏
+
+- 如果闭包作用域链中保存着一个HTML元素，那么就意味着`该元素`将无法被销毁
+
+
 ```javascript
+function assiginHandler(){
+    var element = document.getElementById("someElement");
 
+    element.onclick = function(){
+        console.log(element.id);
+    };
+    
+}
 ```
 
+匿名函数保存了一个对assignHandler活动对象的引用，因此，导致无法减少element的引用数，只要匿名函数存在，element的引用数至少是1，因此它所占用的内存就永远不会被回收
 
 ```javascript
+function assiginHandler(){
+    var element = document.getElementById("someElement");
+    var id = element.id;
 
+    element.onclick = function(){
+        console.log(id);
+    };
+
+    element = null;
+}
 ```
+这样能够解除对DOM对象的引用，顺利的减少引用数，确保能够正确的回收其占用的内存
+
+
+##模仿块级作用域
+
+- 函数对象转化为函数表达式，匿名函数可以构造一个假的块级作用域
 
 ```javascript
-
+	function outputNumber(count){
+	    (function(){
+	        for(var i=0;i<count;i++){
+	            console.log(i);
+	        }
+	    })();
+	    console.log(i);//报错
+	}
 ```
+- 匿名函数中定义的任何变量，都会在执行结束时被销毁
 
-```javascript
-
-```
+- 这种做法可以减少闭包占用的内存问题，因为没有指向匿名函数的引用，只要函数执行完毕，就可以立即销毁其作用域链了。
 
 ```javascript
 
