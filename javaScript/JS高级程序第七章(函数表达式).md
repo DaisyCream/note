@@ -320,68 +320,129 @@ function assiginHandler(){
 
 - 这种做法可以减少闭包占用的内存问题，因为没有指向匿名函数的引用，只要函数执行完毕，就可以立即销毁其作用域链了。
 
+
+##私有变量
+
+###静态私用变量
+
+- 特权方法：我们把有权访问私有变量和私有函数的公有方法称为特权方法
+
 ```javascript
+	var Person;
+	
+	(function(){
+	
+	    var name = "";
+	
+	    Person = function(value){
+	        name = value;
+	    };
+	
+	    Person.prototype.getName = function(){
+	        return name;
+	    };
+	
+	    Person.prototype.setName = function(value){
+	        name = value;
+	    };
+	
+	})();
+	
+	var person1 = new Person("11");
+	console.log(person1.getName());//"11"
+	var person2 = new Person("22");
+	console.log(person2.getName());//"22"
+	console.log(person1.getName());//"22"
+
+```
+
+运用了全局的构造函数，将name值暴露了，但是却让大家都享用了name值，就像在属性函数中定义了变量一样
+
+- 多查找作用域链中的一个层次，就会在一定的情况上影响查找速度，这正是闭包和私有变量的一个明显的不足
+
+###模块模式
+
+- 定义：则是为单列创建私有变量的特权方法，单列就是只有一个实例的对象。js是用对象字面量的方式来创建单列对象的
+
+- 这种对象字面量定义的是单列的公共接口，这种模式在需要对单列进行某些初始化，同时又需要维护其私有变量时时非常有用的
+
+```javascript
+
+var singleton = function(){
+
+    var privateVariable = 10;
+
+    function privateFunction(){
+        return false;
+    }
+
+    return {
+
+        publicProperty :true,
+
+        publicMethod : function(){
+            privateVariable ++;
+            return privateFunction();
+        }
+    }
+
+};
 
 ```
 
 ```javascript
+var application = function(){
+
+    //私有变量和函数
+    var components = new Array();
+
+    //初始化
+    components.push(new BaseComponent());
+
+    //公共
+    return {
+        getComponentCount : function(){
+            return components.length
+        },
+
+        registerComponent : function(component){
+            if(typeof component == "object"){
+                components.push(component);
+            }
+        }
+
+    }
+};
 
 ```
 
-```javascript
+###增强的模块模式
 
-```
-```javascript
-
-```
-
+- 在放回对象之前对其增强代码，这种增强的模块适合那些单例必须是某种类型的实例，同时还必须要添加某些属性和方法对其加以增强的情况
 
 ```javascript
 
-```
+var singleton = function(){
 
-```javascript
+    var privateVariable = 10;
 
-```
+    function privateFunction(){
+        return false;
+    }
+	
+	//创建对象，这个对象必须是CustomType的实例
+    var object = new CustomType();
 
+    object.publicProperty = true;
 
+    object.publicMethod = function(){
+        privateVariable++;
+        return privateVariable;
+    };
 
-```javascript
+    return object;
 
-```
-
-```javascript
-
-```
-
-
-```javascript
-
-```
-
-```javascript
-
-```
-
-
-```javascript
-
-```
-
-```javascript
-
-```
-
-```javascript
-
-```
-
-
-```javascript
-
-```
-
-```javascript
+};
 
 ```
 
