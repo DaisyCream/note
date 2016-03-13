@@ -270,7 +270,7 @@
 
 - 创造了构造函数以后，其原型对象默认只会取得constructor属性，而这个属性也是共享的，至于其他方法，则都是从Object继承而来的
 
-![](/Users/DaisyCream/Desktop/Object.png)
+![](/img/Object.png)
 
 
 - 虽然现实中无法访问到[[prototype]],但可以通过isPrototypeOf()方法来确定是否存在这种关系
@@ -310,7 +310,7 @@
 	console.log(person2.hasOwnProperty("name"));//false
 ```
 
-![](/users/DaisyCream/Desktop/hasOwnProperty.png)
+![](/img/hasOwnProperty.png)
 
 - in操作符：单独使用时，in操作符会在通过对象能够访问的属性时返回true，无论在该实例中还是原型对象中
 
@@ -484,7 +484,7 @@ console.log(p2.friends);//[ 'Shelby', 'Court', 'ss' ]
 
 ```
 
-![](/users/DaisyCream/DeskTop/prototype_chain.png)
+![](/img/prototype_chain.png)
 
 2.确定原型和实例的关系
 

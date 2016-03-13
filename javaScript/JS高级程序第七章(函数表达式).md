@@ -109,7 +109,7 @@ function compare(value1, value2){
 var result = compare(5,10);
 ```
 
-![](/users/DaisyCream/DeskTop/compareChain.png)
+![](/img/compareChain.png)
 
 当第一次调用compare的时候，会创建this，arguments，value1，value2活动对象
 
@@ -142,7 +142,7 @@ var result = compare(5,10);
 
 ```
 
-![](/users/DaisyCream/DeskTop/compare.png)
+![](/img/compare.png)
 
 就算createCompareFuntion完成以后，其活动对象都不会被销毁，应为compareNames仍然使用着匿名函数的作用域链，知道匿名函数被销毁以后，createCompareFuntion的活动对象才会被销毁
 
