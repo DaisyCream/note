@@ -26,11 +26,32 @@ var newValue = oldValue;
 var newValue = window.oldValue
 ```
 
-```javascript
+##窗口
 
+###位置
+
+- screenLeft和screenTop，分别用于表示窗口相对于屏幕左边和上边的位置，FF用screenX和screenY来提供相同的窗口为值信息，safari和chrome也支持这两个属性。在opera中也可以，但是属性不对应，因此不要在opera中使用它们。
+
+```javascript
+	window.moveBy(-100,30);
+	
+	var leftPos = (typeof window.screenLeft == "number")?
+	                window.screenLeft : window.screenX;
+	var topPos = (typeof window.screenTop == "number")?
+	                window.screenTop : window.screenY;
+	
+	console.log(leftPos);
+	console.log(topPos);
 ```
 
+###大小
+
+- outerWidth,outerHeight：在safari和FF，IE中返回浏览器窗口的本身尺寸，无论是从最外层window还是从某个框架访问
+
+- innerWidth,innerHeight：表示该容器中页面试图区的大小(减去边框宽度)
+
 ```javascript
+	
 
 ```
 
