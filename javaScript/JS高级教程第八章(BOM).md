@@ -144,26 +144,122 @@ location.reload();//重新加载（有可能从缓存中加载）
 location.reload(true);//重新加载(从服务器重新加载)
 ```
 
+### navigator检测插件
+
+- 可以使用plugins数组来
+
+除了IE以外的
+```javascript
+        name = name.toLowerCase();
+        for(var i=0;i<navigator.plugins.length;i++){
+            if(navigator.plugins[i].name.toLowerCase().indexOf(name) > -1){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    alert(hasPlugins("flash"));//true	
+
+```
+
+IE
+```javascript
+	function hasIEplugin(name){
+	        try{
+	            new ActiveXObject(name);
+	            return true;
+	        }catch(ex){
+	            return false;
+	        }
+	
+	    }
+
+```
+
+检测所有浏览器的Flash
+
+```javascript
+	function hasFlash(){
+		var result = hasPlugin("Flash");
+		if(!result){
+			result = hasIEPlugin("ShockwaveFlash.ShockwaveFlash");
+		}
+		return result;
+	}
+
+```
+- plugin有一个属性叫做refresh方法，用于刷新plugins以反映最新安装的插件，这个方法接受一个参数：表示是否应该重新加载页面的一个布尔值，若将值设置为true，则会重新加载包含插件的所有页面，否则，只更新pulgins集合，不重新加载页面。
+
+
+### screen
+
+- 用于表明客户端的能力，其中包括浏览器窗口外部的显示器信息，如像素宽度，每个浏览器中的screen对象都包含着各不相同的属性
+
+```javascript
+	 console.log(screen.width);
+    console.log(screen.height);
+
+```
+
+## history
+
+- 对象保存着用户上网的记录，从窗口被打开的那一刻起。
+
+```javascript
+
+	//后退一页 history.go(-1);	//前进一页 history.go(1);	//前进两页 history.go(2);
+
+	//跳转到最近的 wrox.com 页面 history.go("wrox.com");	//跳转到最近的 nczonline.net 页面 history.go("nczonline.net");
+
+	//后退一页 history.back();	//前进一页 history.forward();
+	
+	if (history.length == 0){ //这应该是用户打开窗口后的第一个页面	}
+
+```
+
+- parent 对象表示包含当前框架的框架,而 self 对象则回指 window。
+
 
 ```javascript
 
 ```
 
 
-```javascript
-
-```
-
-
 
 ```javascript
 
 ```
 
 
+
+
 ```javascript
 
 ```
+
+
+
+
+```javascript
+
+```
+
+
+
+
+```javascript
+
+```
+
+
+
+
+```javascript
+
+```
+
+
 
 
 ```javascript
