@@ -124,7 +124,7 @@ var o = {};
 ```javascript
 //假设初始 URL 为 http://www.wrox.com/WileyCDA///将 URL 修改为"http://www.wrox.com/WileyCDA/#section1"location.hash = "#section1";//将 URL 修改为"http://www.wrox.com/WileyCDA/?q=javascript" location.search = "?q=javascript";//将 URL 修改为"http://www.yahoo.com/WileyCDA/" location.hostname = "www.yahoo.com";//将 URL 修改为"http://www.yahoo.com/mydir/" location.pathname = "mydir";//将 URL 修改为"http://www.yahoo.com:8080/WileyCDA/" location.port = 8080;
 ```
-*注意*：每次改变location的值页面都会重新加载
+*注意*：每次改变location的值页面都会重新加载，除了hash
 
 - 通过上面的方式修改URL后，浏览器的历史记录会生成一条新纪录，因此用户通过单机‘后退’按钮都会导航到前一个页面，要禁用这种行为，可以使用replace();
 
@@ -220,50 +220,5 @@ IE
 
 - parent 对象表示包含当前框架的框架,而 self 对象则回指 window。
 
-
-```javascript
-
-```
-
-
-
-```javascript
-
-```
-
-
-
-
-```javascript
-
-```
-
-
-
-
-```javascript
-
-```
-
-
-
-
-```javascript
-
-```
-
-
-
-
-```javascript
-
-```
-
-
-
-
-```javascript
-
-```
 
 
