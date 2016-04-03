@@ -83,18 +83,65 @@ console.log(shallowList.childNodes.length);//0
 
 **1.文档的子节点**
 
-- documentElement属性，该属性始终指向HTML页面中的<html>元素
+- documentElement属性，该属性始终指向HTML页面中的<html>元素，另一个就是通过childNodes列表访问文档元素，但通过documentElement属性则能更快捷，更直接的访问该元素。
 
 ```javascript
+//如果存在文档类型声明,会将其错误地解释为一个注释并把它当作 Comment 节点;而 document.doctype 的值始终为 null。
+var html = document.documentElement;
+var body = document.body;
+var doctype = document.doctype;
 ```
 
+**2.文档信息**
 
 ```javascript
+	var url = document.URL;
+	var domain = document.domain;
+	var referrer = document.referrer;
 ```
+- url和domain属性是相互关联的，domain是可以设置的，但由于安全方面的限制，也不能给domain设置任何值。如果URL中包含子域名，p2p.wrox.com，那么就只能将domain设置为wrox.com。不能将这个属性设置为url中不包含的域。
 
+- 当页面中包含来自其他子域的框架和内嵌框架是，能够设置document.domain就非常方便了，由于跨域的安全问题，来自不同子域的页面无法通过js通信，而通过将页面的domain设置为相同的值，就可以互相访问对方包含的js对象了。
+
+**3.查找元素**
+
+- 单选框(radio)：选择相同的name值，使它们位于一个相同的组内，同一组内只能选中一个按钮
+
+- getElementsByName()方法也会返回一个 HTMLCollection。但是,对于这里的单选按钮来说,namedItem()方法则只会取得第一项(因为每一项的 name 特性都相同)。
+
+- HTMLCollection：如果使用的选择元素为elements的话，会自动生成，犹如nodeList一样的东西，还有一个属性叫做nameItem()，这个方法可以通过元素的name特性取得集合中的项，也可以用方括号
+
+**4.特殊集合**
+
+- document.anchors,包含文档中所有带 name 特性的<a>元素;
+
+- document.forms,包含文档中所有的<form>元素,与document.getElementsByTagName("form")得到的结果相同;
+ **5.DOM一致性检测**
+ 
+ - document.implementation.hasFeature('dom功能','版本号');
+
+
+ **6.文档写入**
+ 
+ - open,close,write,writeLn
+
+
+### Element类型
+ 
+- nodeType的值为1
+- nodeName的值为元素的标签名
+- nodeValue的值为null
+- parentNode可能是Document或者element
+- 访问元素的值就直接tagName(tagName == nodeName)
 
 ```javascript
+	if(element.tagName.toLowerCase() == 'div'){
+		这样就好，适用于所有文档（XML,HTML）
+	}
+
 ```
+
+- **1.HTML元素**
 
 
 ```javascript
