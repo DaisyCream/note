@@ -143,25 +143,69 @@ var doctype = document.doctype;
 
 - **1.HTML元素**
 
+- 直接继承了Element并且添加了一些属性
+
+- 拥有id,title,dir,className(与元素class特性对应，即为元素指定的CSS类，没有将这个属性命名为class，是因为ES中的保留字)
+
+- 并不是对所有属性的修改都会在页面中直观的表现出来，对ID或lang的修改对用户而言是透明不可见的，而对title的修改只有鼠标移动到这个元素之才会显示出来。
+
+- **2.取得特性**
+
+- getAttribute的特性名与实际的特性名相同，因此想要得到class的值，应该传入“class”而不是“className”，后者只有在通过对象属性访问特性时才用。如果给定名称的特性不存在，getAttribute返回null；也可以有自定义属性，自定义属性也要加上_data前缀以便验证，只有在取得自定义特性值的情况下,才会使用 getAttribute()方法。
 
 ```javascript
+	<div id="myDiv" my_special = "hello!"></div>
+	var value = document.getElementById("myDiv").getAttribute("my_special");
 ```
 
+- 任何元素的所有特性，也都可以通过DOM元素本身的属性来访问，不过，只有公认的特性才会以属性的形式添加到DOM对象中。
 
+- 有两类特殊的特性，他们虽然有对应的属性名，但属性的值通过getAttribute返回的值并不相同。第一类就是style
+
+style
 ```javascript
+	var ele = document.getElementById('element');
+	ele.style;//输出的是一个对象，对象中有style的所有值，包括没有定义过的
+	ele.getAttribute('style');//输出的是style的css文本
 ```
 
+- onclick:通过getAttribute访问，则会返回相应代码的字符串，而在访问属性是，则会返回一个js函数。
 
+onclick
 ```javascript
+	<ul style="color:#000;font-size: 13px" onclick="console.log(1)">
+	console.log(ul.onclick);//function onclick(event){console.log(1)}
+	console.log(ul.getAttribute('onclick'));//console.log(1)
+
 ```
 
+- **3.设置特性**
+
+- 通过这个方法设置的 特性名会被统一转换为小写形式,即"ID"最终会变成"id"。
+ 
+- 因为所有特性都是属性,所以直接给属性赋值可以设置特性的值
 
 ```javascript
+	div.mycolor = 'red';
+	console.log(div.getAttribute('mycolor'));//null(IE除外)
+	ul.ss = "wahah";
+	console.log(ul.ss);//wahha
+	console.log(ul.getAttribute('ss'));//null
+
 ```
 
+- **4.attribute**
 
+- Element 类型是使用 attributes 属性的唯一一个 DOM 节点类型。attributes 属性中包含一个NamedNodeMap，与nodeList类似
+
+- getNamedItem(name):返回 nodeName 属性等于 name 的节点
+- removeNamedItem(name):从列表中移除 nodeName 属性等于 name 的节点
+- setNamedItem(node):向列表中添加节点,以节点的 nodeName 属性为索引
+- item(pos):返回位于数字 pos 位置处的节点
 
 ```javascript
+	var id = element.attribute.getNamedItem('id').nodeValue
+	var id = element.attribute['id'].nodeValue;
 ```
 
 
