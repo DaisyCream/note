@@ -208,6 +208,100 @@ onclick
 	var id = element.attribute['id'].nodeValue;
 ```
 
+- IE7 及更早的版本会返回 HTML 元素中所有可能的特性,包括没有指定的特性，每个特 性节点都有一个名为 specified 的属性,这个属性的值如果为 true,则意味着要么是在 HTML 中指 12 定了相应特性,要么是通过 setAttribute()方法设置了该特性。在 IE 中,所有未设置过的特性的该属性值都为 false。
+
+```javascript
+	function outputAttributes(element){
+    var pairs = new Array(),
+        attrName,
+        attrValue,
+        i,
+        len;
+
+    for(i=0,len=element.length;i<len;i++){
+        attrName = element.attribute.nodeName;
+        attrValue = element.attribute.nodeValue;
+        if(element.attribute.specified){//IE浏览器会把自身加的东西
+            pairs.push(attrName + "=\"" + attrValue +"\"");
+        }
+    }
+    return pairs.join(" ");
+}
+
+```
+
+- **5.创建元素**
+
+- 下面这种写法有助于避开IE7及更早版本中动态创建元素的某些问题
+- 不能通过表单reset()方法重设动态创建的<input>元素
+- 动态创建的type特性值为"reset"的<button>元素重设不了表单
+- 动态创建的一批name相同的单选按钮彼此毫无关系，动态创建的一批这种单选按钮之间却没有这种关系
+
+```javascript
+	//但是,由于这样的用法要求使用浏览器检测,因此我们 建议只在需要避开 IE 及更早版本中上述某个问题的情况下使用
+	var div = document.createElement("<fiv id=\"myNewDiv\"> class=\"box\"></div>")
+```
+
+- **6.元素的子节点**
+
+- 如果用IE来解释下列代码，那么<ul>元素会包含3个子节点，分别是3个<li>。但是其他浏览器，<ul>元素都会有7个元素，3个<li>元素，4个文本节点
+
+```javascript
+<ul id="myList">        <li>Item 1</li>        <li>Item 2</li>        <li>Item 3</li></ul>
+//包含3个<li>，不论任何浏览器
+<ul id="myList"><li>Item 1</li><li>Item 2</li><li>Item 3</li></ul>
+```
+
+
+```javascript
+	for(var i=0,len=element.childNodes.length;i<len;i++){
+		if(element.childNodes[i].nodeType == 1){
+			//执行某些操作
+		}
+	}
+```
+
+### text类型
+
+- nodeType的值为3
+- nodeName 的值为"#text"
+- nodeValue 的值为节点所包含的文本
+- parentNode 是一个 Element
+- splitText(offset)：从 offset 指定的位置将当前文本节点分成两个文本节点
+
+- 一般情况下,每个元素只有一个文本子节点。不过,在某些情况下也可能包含多个文本子节点,如￼下面的例子所示,如果两个文本节点是相邻的同胞节点,那么这两个节点中的文本就会连起来显示,中间不会有空格。
+
+```javascript
+var element = document.createElement("div");
+element,className = "message";
+var textNode = document.createTextNode("Hello World!");
+element.appendChild(textNode);
+
+var anotherTextNode = document.createTextNode("Yippee!");
+elemment.appendChild(anotherTextNode);
+
+document.body.appendChild(element);
+```
+
+- **2.规范文本节点**
+
+- 会将element的文本节点合为一个，中间不会有空格
+
+```javascript
+element.normalize();
+```
+
+- **3.分隔文本节点**
+
+- text类型提供了一个作用于normalize相反的方法，splitText，会将一个文本节点分为两个文本节点
+
+### comment类型
+
+- nodeType的值为8
+- nodeName的值为“#comment”
+- nodeValue的值是注释的内容
+- parentNode可能是Document或Element
+- 没有子节点
 
 ```javascript
 ```
@@ -221,24 +315,10 @@ onclick
 ```
 
 
-```javascript
-```
 
 
-```javascript
-```
 
 
-```javascript
-```
-
-
-```javascript
-```
-
-
-```javascript
-```
 
 
 
