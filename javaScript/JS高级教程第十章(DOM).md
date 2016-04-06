@@ -208,7 +208,7 @@ onclick
 	var id = element.attribute['id'].nodeValue;
 ```
 
-- IE7 及更早的版本会返回 HTML 元素中所有可能的特性,包括没有指定的特性，每个特 性节点都有一个名为 specified 的属性,这个属性的值如果为 true,则意味着要么是在 HTML 中指 12 定了相应特性,要么是通过 setAttribute()方法设置了该特性。在 IE 中,所有未设置过的特性的该属性值都为 false。
+- IE7 及更早的版本会返回 HTML 元素中所有可能的特性,包括没有指定的特性，每个特性节点都有一个名为 specified 的属性,这个属性的值如果为 true,则意味着要么是在 HTML 中指定了相应特性,要么是通过 setAttribute()方法设置了该特性。在 IE 中,所有未设置过的特性的该属性值都为 false。
 
 ```javascript
 	function outputAttributes(element){
@@ -304,58 +304,88 @@ element.normalize();
 - 没有子节点
 
 ```javascript
+var comment = document.createComment("A comment ");
+```
+
+### DocumentType类型
+
+- 仅有Firefox，Safari和Opear支持它，documentType包含着与文档的doctype有关的消息
+
+
+### DocumentFragment类型
+
+- DOM规定文档片段是一种“轻量级”的文档，但是他在文档中没有对应任何标记，可以包含和控制节点，但不会像完整的文档那样占用额外资源，使用document.createDocumentFragment方法；
+
+- 如果我们逐个在文档树中添加列表项，将会导致浏览器反复渲染呈现新消息。为了避免这个问题，可以像下面这样使用一个文档片段来保存创建的列表项，然后再一次性将它们添加到文档中。
+
+```javascript
+
+var fragment = document.createDocumentFragment();
+var ul = document.getElementById('myList');
+var li = null;
+
+for(var i=0;i<3;i++){
+	li = document.createElement('li');
+	li.appendChild(document.createTextNode("Item " + (i+1)));
+	fragment.appendChild(li);
+}
+
+ul.appendChild(fragment);
+
+```
+
+### Attr类型
+
+```javascript
+	var attr = document.createAttribute("align");
+	attr.value = "left";
+	element.setAttributeNode(attr);
+	console.log(element.attributes["align"].value);//left
+	console.log(element.getAttributeNode('align').value);//left
+	console.log(element.getAttribute('align'));//left
+
+```
+
+
+## DOM操作技术
+
+### 动态脚本
+
+
+
+```javascript
+	var script = document.createElement('script');
+	script.type = "text/javascript";
+	script.src = 'client.js';
+	document.body.appendChild(script);
 ```
 
 
 ```javascript
+function loadScript(url){
+	var script = document.createElement('script');
+	script.type = "text/javascript";
+	script.url = url;
+	document.body.appendChild(script);
+}
 ```
 
+- IE中将<script>视为一个特殊元素，不允许DOM访问其子节点，不过，可以使用<script>元素的text属性来指定js代码，像下面的例子这样；
 
 ```javascript
-```
+var script = document.createElement('script');
+script.type = "text/javasctipt";
+var code = "function sayHi(){alert("Hi!")}";
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-```javascript
+try{
+	script.appendChild(document.createTextNode(code));
+}catch(ex){
+	script.text = code;
+}
 
 ```
 
-
-```javascript
-
-```
-
-
-
-```javascript
-
-```
+### 动态样式
 
 
 ```javascript
