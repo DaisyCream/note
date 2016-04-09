@@ -44,6 +44,10 @@
 
 - 根据对上面的TOP, right, bottom,left观察，如果left>=right或者bottom <= top,则元素会被完全裁掉不见。
 
+- 一般来说css sprite使用background-position来调整位置的，但是IE6以下不能使用，它没有Alpha透明通道的png图片。那样就可以使用img来配合clip:rect可以轻松实现sprite图片的hover功能
+
+- clip:rect矩形裁剪只能作用于position:absolute的元素上；
+
 
 
 
