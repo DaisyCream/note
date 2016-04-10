@@ -95,67 +95,61 @@ opera：“H1”
 结论：当元素某个父元素为进行css定位时，则这个元素的offsetParent属性的取值为在DOM结构层次中距离最近，并且已进行了CSS定位
 
 
-```javascript
-
-```
-
-
-
 
 ```javascript
+<table width="500", border="0">
+	<tr>
+		<td id="td1">
+			<div id="pObj1">
+				<span id="obj1"></span>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<div id="pObj2" style="position:relative">
+				<span id="obj2"></span>
+			</div>
+		</td>
+	</tr>
+</table>
 
 ```
+测试结果：
+obj1.offsetParent返回td1对象
+obj2.offsetParent返回pObj2对象
+
+**结论**：offsetParent不但会找到已经定位的父级元素，而且还会查找类型为TD和TABLE的父级元素，只要找到这三种元素的任何一种元素将返回此元素，否则返回body对象。
 
 
 
-
-
-```javascript
-
-```
-
-
-
-
-
-```javascript
-
-```
-
-
-
-
-
-```javascript
-
-```
-
-
-
-
-
+###offset计算位置
 
 ```javascript
 
+	function getDocumentLeft(target){
+		var left = target.offsetLeft;
+		var current = target.offsetParent;
+		while(current!=null){
+			left += current.offsetParent;
+			curr = current.offsetParent;
+		}
+		return left;
+	}
+	
+	function getDocumentRight(target){
+		var top = target.offsetTop;
+		var current = target.offsetParent;
+		while(current!=null){
+			top += current.offsetTop;
+			current = current.offsetParent
+		}
+		return top;
+	}
+
+
 ```
 
-
-```javascript
-
-```
-
-
-
-```javascript
-
-```
-
-
-
-
-```javascript
-
-```
 
 
 
