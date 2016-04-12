@@ -296,53 +296,164 @@ ul.innerHtml = itemHtml;
 
 ```
 
+## 专有扩展
 
+### 文档模式
+
+- 文档模式决定你可以用哪些级别的CSS和jsAPI以及如何对待文档类型
 
 ```javascript
+//知道文档模式的版本号
+var mode = document.documentMode
 
 ```
 
+### children属性
 
+### contains方法
+
+- 某个节点是不是另一个节点的后代，引入了contains方法。
+
+- 调用contains方法的应该是祖先节点，也就是搜索开始的节点，这个方法接受一个参数，即要检测后代的节点。如果检测的节点是该节点的后代，该方法返回true，否则返回false；
 
 ```javascript
+//检测body元素是否是html元素的后代
+console.log(document.docuemntElement.contains(document.body));//true
+```
 
+- **compareDocumentPosition**
+
+- 该方法也能确定节点间的关系，支持这个方法的浏览器有IE9+，ff，safari，opera，chrome。这个方法用于确定两个节点间的关系
+
+- 1：无关（给定的节点不在当前文档中）
+- 2：局前（给定的节点在DOM树种位于参考点之前）
+- 4：局后（给定的节点在DOM树种位于参考节点之后）
+- 8：包含（给定的节点是参考节点的祖先）
+- 16：被包含（给定的节点是参考节点的后代）
+
+```javascript
+var result = document.docuemntElement.compareDocumentPosition(document.body);
+console.log(!!(result & 16));//对掩码16执行按位操作会返回一个非零数值，而两个逻辑非操作符会将该数值转换成为布尔值。
+
+//执行上面的代码后，结果会变成20，因为16和4
 ```
 
 
-
-
 ```javascript
+function contains(refNode, otherNode){
+	if(typeof refNode.contains == "function" &&
+	(!client.engine.webkit || client.engine.webkit >= 522)){
+		return refNode.contains(otherNode);
+	}else if(typeof refNode.compareDocumentPosition == "function"){
+		return !!(rerNode.compareDocumentPosition(otherNode) & 16);
+	}else{
+		var node = otherNode.parentNode;
+		do {
+			if(node === refNode){
+				return true;
+			}else{
+				node = node.parentNode;
+			}
+		}while(node !== null);
+		return false;
+	}
+}
 
 ```
 
+### 插入文本
 
+**1.innerText属性**
+
+- 属性中包含所有的文本内容，包括子文档树种的文本。再通过innerText读取值得时候，它会按照由浅到深的顺序，将子文档中的所有文本拼接起来。
 
 ```javascript
+<div id="content">    <p>This is a <strong>paragraph</strong> with a list following it.</p>    <ul>        <li>Item 1</li>        <li>Item 2</li>        <li>Item 3</li>	</ul>
+ </div>
 
 ```
 
+用不同浏览器处理空白符的方式不同，因此输出的文本可能不会包含原始html代码中的缩进
+
+innerHtml返回值：
+This is a paragraph with a list following it.
+Item1
+Item2
+Item3
+
+- 替换子文本节点，而为了确保只生成一个子文本节点，就要对文本进行HTML编码，利用这一点，可以通过innerText属性过滤掉HTML标签，方法是innerText设置为等于innerText，这样就可以去掉所有HTML标签。
 
 ```javascript
+div.innerText = div.innerText;
+```
+
+- ff不支持innerText，但支持作用类似的textContent属性。下面是兼容性的
+
+- innerText与textContent返回的内容并不完全一样，innerText会忽略行内的样式和脚本，而textContent则会像返回其他文本一样返回行内的样式和脚本代码。避免浏览器兼容问题的最佳途径，就是从不包含行内样式或行内脚本的DOM中读取片段。
+
+```javascript
+function getInnerText(element){
+	return (typeof element.textContent == "string") ?
+	element.textContent : element.innerText;
+}
+
+function setInnerText(element, text){
+	if(typeof element.textContent == "string"){
+		element.content = text;
+	}else{
+		element.innerText = text;
+	}
+}
 
 ```
 
+**2.outerText属性**
 
+- 在读模式上，除了范围扩大到了包含调用它的节点之外，outerText和innerText基本上没有多大区别。但是在写模式下，outerText就完全不同了，outerText不只是替换调用它的元素的子节点，而是会替换整个元素。
 
 ```javascript
+div.outerText = "Hello world!"
+
+//上面和下面的
+var text = document.createTextNode("Hello world!");
+div.parentNode.replaceChild(text, div);
 
 ```
 
+- 本质上，新的文本节点会完全取代调用outerText的元素，此后，该元素就从文档中被删除，无法访问。
 
+
+### 滚动
+
+- srollIntoViewIfNeeded(alignCenter)：只在当前元素在视口中不可见的情况下，才滚动浏览器窗口或容器元素，最终让它可见。如果当前元素在视口中可见，这个方法什么也不做。如果将可选的alignCenter参数设置为true，则表示尽量将元素显示在视口中部。
+- scrollByLines：将元素的内容滚动指定的行高。
+- scrollByPages：将元素的内容滚动指定的页面高度，具体高度由元素的高度决定。
+
+- scrollIntoView和scrollIntoViewIfNeeded()作用对象是元素的容器，而scrollByLines和scrollByPages影响的则是元素自身
 
 ```javascript
+//让页面主体滚动5行
+document.body.scrollByLines(5);
+
+//在当元素不可见的时候，让它进入浏览器视口。
+document.image[0].scrollIntoViewIfNeeded();
+
+//将页面主体往回滚动一页
+document.body.scrollByPages(-1);
 
 ```
 
+- 由于scrollIntoView是唯一一个所有浏览器都支持的方法，因此还是这个方法最常用。
 
 
-```javascript
 
-```
+
+
+
+
+
+
+
 
 
 

@@ -113,7 +113,7 @@ var doctype = document.doctype;
 
 **4.特殊集合**
 
-- document.anchors,包含文档中所有带 name 特性的<a>元素;
+- document.anchors,包含文档中所有带 name 特性的a元素。
 
 - document.forms,包含文档中所有的<form>元素,与document.getElementsByTagName("form")得到的结果相同;
  **5.DOM一致性检测**
@@ -163,6 +163,7 @@ var doctype = document.doctype;
 - 有两类特殊的特性，他们虽然有对应的属性名，但属性的值通过getAttribute返回的值并不相同。第一类就是style
 
 style
+
 ```javascript
 	var ele = document.getElementById('element');
 	ele.style;//输出的是一个对象，对象中有style的所有值，包括没有定义过的
@@ -172,6 +173,7 @@ style
 - onclick:通过getAttribute访问，则会返回相应代码的字符串，而在访问属性是，则会返回一个js函数。
 
 onclick
+
 ```javascript
 	<ul style="color:#000;font-size: 13px" onclick="console.log(1)">
 	console.log(ul.onclick);//function onclick(event){console.log(1)}
