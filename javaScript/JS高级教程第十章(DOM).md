@@ -435,6 +435,21 @@ for(i=0,len=divs.length;i<len;i++){
 
 ```
 
+### Dom sibling
+
+- 在IE中会自动过滤掉空白文本节点 ele.previousSibling，在ff和chrome中可能会包含空白文本节点 [object text]
+
+```javascript
+	//获取下一个同级节点
+	function prev(elem){
+		do{
+			elem = elem.previousSibling;
+		}while(elem && elem.nodeType != 1);
+		return elem;
+	}
+
+```
+
 ### 小结
 
 - 最基本的节点类型是 Node,用于抽象地表示文档中一个独立的部分;所有其他类型都继承自Node。
