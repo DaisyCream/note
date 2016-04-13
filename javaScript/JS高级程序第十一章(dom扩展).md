@@ -226,7 +226,7 @@ div.innerHtml = "Hello & welcome, <b>\"reader\"!</b>"//带有html元素的innerH
 <div id="content">Hello &amp; welcome, <b>&quot;reader&quot;!</b></div>
 ```
 
-- 在大多数浏览器中，通过innerHtml插入<script>元素并不会执行其中的脚本。但必须满足一些条件，一是必须为<script>元素指定defer属性，二是<script>元素必须位于“有作用域的元素”之后。
+- 在大多数浏览器中，通过innerHtml插入script元素并不会执行其中的脚本。但必须满足一些条件，一是必须为script元素指定defer属性，二是script元素必须位于“有作用域的元素”之后。
 
 - 如果通过innerHtml插入的字符串开头就是一个无作用域的元素，那么IE会在解析这个字符串先前删除该元素。
 
@@ -241,7 +241,7 @@ div.innerHTML = "<input type=\"hidden\"><script defer>alert('hi');<\/script>";
 
 ```
 
--  IE8 及更早版本中,<style>也是一个“没有作用域的元素”,因此必须像下面这样给它前置 一个“有作用域的元素”
+-  IE8 及更早版本中,style也是一个“没有作用域的元素”,因此必须像下面这样给它前置 一个“有作用域的元素”
 
 - IE8原生支持toStaticHTML()方法，得到无害处理版本。
 
@@ -250,7 +250,7 @@ div.innerHTML = "<input type=\"hidden\"><script defer>alert('hi');<\/script>";
 - 在读模式下,outerHTML 返回调用它的元素及所有子节点的 HTML 标签。在写模式下,outerHTML 会根据指定的 HTML 字符串创建新的 DOM 子树,然后用这个 DOM 子树完全替换调用元素。
 
 ```javascript
-<div id="content">        <p>This is a <strong>paragraph</strong> with a list following it.</p>        <ul>￼￼￼￼        <li>Item 1</li>        <li>Item 2</li>        <li>Item 3</li></ul> </div>
+<div id="content">        <p>This is a <strong>paragraph</strong> with a list following it.</p>        <ul>        <li>Item 1</li>        <li>Item 2</li>        <li>Item 3</li></ul> </div>
 
 div.outerHTML = "<p>This is a paragraph</p>"//method1
 
@@ -444,19 +444,3 @@ document.body.scrollByPages(-1);
 ```
 
 - 由于scrollIntoView是唯一一个所有浏览器都支持的方法，因此还是这个方法最常用。
-
-
-
-
-
-
-
-
-
-
-
-
-
-```javascript
-
-```
