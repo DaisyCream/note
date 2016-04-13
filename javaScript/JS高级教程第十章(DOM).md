@@ -372,7 +372,7 @@ function loadScript(url){
 }
 ```
 
-- IE中将<script>视为一个特殊元素，不允许DOM访问其子节点，不过，可以使用<script>元素的text属性来指定js代码，像下面的例子这样；
+- IE中将script视为一个特殊元素，不允许DOM访问其子节点，不过，可以使用script元素的text属性来指定js代码，像下面的例子这样；
 
 ```javascript
 var script = document.createElement('script');
@@ -389,10 +389,10 @@ try{
 
 ### 动态样式
 
-- IE中将<style>和<script>视为一类特殊元素，不允许DOM访问其子节点，不过，可以使用<style>元素的cssText属性来指定js代码，像下面的例子这样；
+- IE中将style和script视为一类特殊元素，不允许DOM访问其子节点，不过，可以使用style元素的cssText属性来指定js代码，像下面的例子这样；
 
 
-- 如果专门针对 IE 编写代码,务必小心使用 styleSheet.cssText 属性。在重用 5 同一个<style>元素并再次设置这个属性时,有可能会导致浏览器崩溃。同样,将cssText 属性设置为空字符串也可能导致浏览器崩溃。
+- 如果专门针对 IE 编写代码,务必小心使用 styleSheet.cssText 属性。在重用 5 同一个style元素并再次设置这个属性时,有可能会导致浏览器崩溃。同样,将cssText 属性设置为空字符串也可能导致浏览器崩溃。
 
 ```javascript
 
