@@ -198,6 +198,77 @@ if(type.indexOf(".") >= 0){
 //data就是事件回调函数返回的[event,data],如果传递了数据就合并到data中
 data = data = null?[event]:jQuery.makeArray(data, [event]);
 
+```
+
+- 5.jQuery.event.special
+用来做模拟事件的，比如聚焦冒泡
+
+- 6.模拟冒泡事件
+
+```javascript
+//如果需要冒泡，特殊事件不需要阻止冒泡，且elem不是window对象
+//onlyHandlers为true 表示不冒泡
+if(!onlyHandlers && !special.noBubble && jQuery.isWindow(elem)){
+	//冒泡时是否需要转成别的事件(用于事件模拟)
+	bubbleType = special.delegateType || type;
+	
+	//如果不是变形来的foucusin/out事件
+	if(!rFocusMorph.test(bubleType + type)){
+		cur = cur.parentNode;
+	}
+	
+	for(; cur; cur = cur.parentNode){
+		eventPath.push(cur);//推入要触发事件的所有元素队列
+		tmp = cur;//存一下循环中最后一个cur
+	}
+	
+	//如果最后一个cur是document，那么事件需要触发到window对象上，将window推入
+	if(tmp === (elem.ownerDocument || document)){
+		eventPath.push(tmp.defaultView || tmp.parentWindow || window);
+	}
+
+}
 
 ```
+
+- 7.处理事件
+
+```javascript
+	i=0;
+	while((cur = eventPath[i++]) && !event.isPropagationStopped()){
+		
+		//先确定事件绑定类型是delegateType还是bindType
+		event.type = i > 1 ?
+		bubbleType:
+		spacial.bindType || type;
+	
+		//检测缓存中该元素对应事件中包含事件处理器，
+		//有则取出主处理器(jQuery handle)来控制所有分事件处理器
+		handle = (jQuery._data(cur, "events") || {})[event.type] && 		jQuery._data(cur, "handle");
+		
+		if(handle){
+			handle.apply(cur, data);
+		}
+	
+		//取出原生事件处理器elem.ontype,如click事件就是elem.onClick
+		handle = ontype && (cur[ontype]);
+	
+		//如果原生事件处理器存在，检测需不需要阻止事件在浏览器上的默认动作
+		if(handle && jQuery.acceptData(cur) && handle.apply && handle.apply(cur, data)===false){
+			event.preventDefalut();
+		}
+	
+	}
+```
+
+jQuery.event.dispatch.apply(eventHandle.elem, arguments);
+这时候事件就是按照dispatch的触发规则，自行处理了，如果是浏览器事件就会按照dispatch处理冒泡了，自定义的就过滤了
+
+### 总结
+
+- 所以整个trigger的核心，还是围绕着数据缓存在处理的，通过on机制在jQuery.event.add的时候预处理好了
+
+- 最终通过jQuery.event.dispatch派发
+
+- 通过trigger很好的模拟了浏览器事件流程，但是美中不足的是对象的事件混淆其中 这就造成了 触发对象事件的时候 最后会调用对象的相应方法
 
