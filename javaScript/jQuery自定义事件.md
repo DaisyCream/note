@@ -275,4 +275,8 @@ jQuery.event.dispatch.apply(eventHandle.elem, arguments);
 - 1.jQuery为统一原生Event对象而封装的jQuery.Event类，封装了preventDefault，stopPropagation,stopImmediatePropagation原生接口，可以直接捕获到用户的行为
 - 2.由核心组件 jQuery.cache 实现注册事件处理程序的存储，实际上绑定在 DOM元素上的事件处理程序只有一个，即 jQuery.cache[elem[expando]].handle 中存储的函数，该函数在内部调用 jQuery.event.dispatch(event) 实现对该DOM元素特定事件的缓存的访问，并依次执行这些事件处理程序
 - 3.jQuery.event.add(elem, types, handler, data, selector) 方法用于给特定elem元素添加特定的事件 types([type.namespace, type.namespace, ...])的事件处理程序 handler, 通过第四个参数 data 增强执行当前 handler 事件处理程序时的 $event.data 属性，以提供更灵活的数据通讯，而第五个元素用于指定基于选择器的委托事件
-
+- 4.namespace 命名空间机制，namespace 机制可以对事件进行更为精细的控制，开发人员可以指定特定空间的事件，删除特定命名空间的事件，以及触发特定命名空间的事件。这使得对事件处理机制的功能更加健
+- 5.jQuert.event.special 对象用于某些事件类型的特殊行为和属性。比如 load 事件拥有特殊的 noBubble 属性，可以防止该事件的冒泡而引发一些错误。总的来说，有这样一些方法和属性：
+- 6.jQuery.event.simulate(type, elem, event, bubble)模拟事件并立刻触发方法，可用于在DOM元素 elem 上模拟自定义事件类型 type，参数 bubble用于指定该事件是否可冒泡，event 参数表示 jQuery 事件对象 $event。 模拟事件通过事件对象的isSimulated属性为 true 表示这是模拟事件。该方法内部调用 trigger() 逻辑 或 dispatch() 逻辑立刻触发该模拟事件。该方法主要用于修正浏览器事件的兼容性问题，比如模拟出可冒泡的 focusin/ focusout 事件，修正IE中 change 事件的不可冒泡问题，修正IE中 submit事件不可冒泡问题
+- 7.jQuery.event.dispatch(event) 方法在处理事件委托机制时，依赖委托节点在DOM树的深度安排优先级，委托的DOM节点层次越深，其执行优先级越高。而其对于stopPropagation的处理有些特殊，在事件委托情况下并不一定会调用绑定在该DOM元素上的该类型的所有事件处理程序，而依赖于委托的事件处理程序的执行结果，如果低层委托的事件处理程序声明了停止冒泡，那么高层委托的事件以及自身绑定事件就不会被执行，这拓展了 DOM 委托机制的功能。
+- 8.
