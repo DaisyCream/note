@@ -264,11 +264,15 @@ if(!onlyHandlers && !special.noBubble && jQuery.isWindow(elem)){
 jQuery.event.dispatch.apply(eventHandle.elem, arguments);
 这时候事件就是按照dispatch的触发规则，自行处理了，如果是浏览器事件就会按照dispatch处理冒泡了，自定义的就过滤了
 
-### 总结
-
 - 所以整个trigger的核心，还是围绕着数据缓存在处理的，通过on机制在jQuery.event.add的时候预处理好了
 
 - 最终通过jQuery.event.dispatch派发
 
 - 通过trigger很好的模拟了浏览器事件流程，但是美中不足的是对象的事件混淆其中 这就造成了 触发对象事件的时候 最后会调用对象的相应方法
+
+### 总结
+
+- 1.jQuery为统一原生Event对象而封装的jQuery.Event类，封装了preventDefault，stopPropagation,stopImmediatePropagation原生接口，可以直接捕获到用户的行为
+- 2.由核心组件 jQuery.cache 实现注册事件处理程序的存储，实际上绑定在 DOM元素上的事件处理程序只有一个，即 jQuery.cache[elem[expando]].handle 中存储的函数，该函数在内部调用 jQuery.event.dispatch(event) 实现对该DOM元素特定事件的缓存的访问，并依次执行这些事件处理程序
+- 3.jQuery.event.add(elem, types, handler, data, selector) 方法用于给特定elem元素添加特定的事件 types([type.namespace, type.namespace, ...])的事件处理程序 handler, 通过第四个参数 data 增强执行当前 handler 事件处理程序时的 $event.data 属性，以提供更灵活的数据通讯，而第五个元素用于指定基于选择器的委托事件
 
