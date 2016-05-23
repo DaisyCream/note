@@ -89,11 +89,28 @@ CACHE MANIFEST
 - downloading：*第一次*下载或更新manifest清单文件时，触发该事件
 - progress：该事件与downloading类似，但downloading事件只触发一次，progress事件则在清单下载过程中周期性触发
 - Cache：当manifest清单文件下载完毕*成功缓存*后，触发该事件
-- updateready：此事件表示缓存清单文件已经下载完毕，可通过重新加载页面读取缓存文件或通过方法swapCache切换新的缓存文件，常用于本地缓存更新版本后提示。
-- Obsolte：加入访问manifest缓存文件返回404，或410时，触发该事件。
+- updateready：此事件表示缓存清单*文件*已经下载完毕，可通过重新加载页面读取缓存文件或通过方法swapCache切换新的缓存文件，常用于本地缓存更新版本后提示。
+- Obsolete：加入访问manifest缓存文件返回404，或410时，触发该事件。
 - Error：已出发obsolete事件，manifest文件没有改变，但缓存文件中存在文件下载失败，获取manifest文件发生错误，更新版本时，manifest被再次修改
 
+可以根据applicationCache对象的转态处理相关业务
 
+```javascript
+applicationCache.addEventListener("updateready", function(){
+
+})
+
+```
+
+###判断浏览器的状态
+window.navigator属性online
+
+```javascript
+if(window.navigator.online){
+}else{
+}
+
+```
 
 
 
