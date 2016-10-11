@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>js模块化测试AMD CMD</title>
+	</head>
+	<script data-main="./js/amdCode" src="require.js"></script>
+	<body>
+		
+
+	</body>
+</html>
+<script>
+	require(['amdCode'],function(amdCode){
+		amdCode.foo();
+	});
+
+
+
+</script>
